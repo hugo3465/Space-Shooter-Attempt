@@ -53,14 +53,17 @@ class Game:
 
     def check_events(self):
         for event in pygame.event.get():
+            # close buttom
             if (event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
                 pygame.quit()
                 sys.exit()
 
+            # spawn asteroids
             if event.type == self.asteroid_enemy_timer:
                 self.asteroid_enemy_list.add(
                     Asteroid(self, (randint(90, WINDOW_HEIGHT - 15), 0)))
 
+            # spawn airships
             if event.type == self.airship_enemy_timer:
                 self.airship_enemy_list.add(
                     Airship(self, (randint(90, WINDOW_HEIGHT - 15), 0)))
@@ -76,9 +79,7 @@ class Game:
         self.death_sound.play()
         self.explosion()
         self.game_active = False
-
-    # Check collision between player and enemies
-
+    
     def check_colision(self):
         if not self.game_active:
             return
@@ -111,16 +112,13 @@ class Game:
                 if airship_hit:
                     laser.kill()
 
-            # check collision between enemy airship lasers lasers and the player
-            # for enemy in self.airship_enemy_list:
-            #     player_hit = airship_hit = pygame.sprite.spritecollide(self.player, enemy.lasers,True) # remove a airship quando colide
 
     def draw(self):
         # Background
         self.screen.blit(self.background_image, (0, 0))
 
         # Player Lasers
-        self.player.sprite.lasers.draw(self.screen)  # drawing lasers
+        self.player.sprite.lasers.draw(self.screen)
 
         # Player
         self.player.draw(self.screen)
@@ -150,7 +148,7 @@ class Game:
             self.asteroid_enemy_list.update()
             self.airship_enemy_list.update()
 
-        self.check_colision()
+            self.check_colision()
 
 # TODO explosion class not working
 class Explosion(pygame.sprite.Sprite):
